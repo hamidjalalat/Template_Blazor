@@ -1,4 +1,4 @@
-﻿@page "/Application/Edit/{IdMaster}"
+﻿@page "/Application/Edit"
 
 @using Hjx;
 @using ViewModels.Applications;
@@ -18,7 +18,7 @@
                 <label for="Username" class="control-label col-md-4">نام </label>
             </div>
             <div class="col-md-11">
-                <input id="Username" name="Username" class="form-control" @bind="Model.Name" />
+                <input id="Username" name="Username" class="form-control" @bind-value="Model.Name" />
                 <div class="form-control-validation">
                     <ValidationMessage For="() => Model.Name" />
                 </div>
@@ -30,7 +30,7 @@
                 <label for="Username" class="control-label col-md-4">توضیح </label>
             </div>
             <div class="col-md-11">
-                <input id="Username" name="Username" class="form-control" @bind="Model.Description" />
+                <input id="Username" name="Username" class="form-control" @bind-value="Model.Description" />
                 <div class="form-control-validation">
                     <ValidationMessage For="() => Model.Description" />
                 </div>
@@ -41,6 +41,7 @@
         <div class="form-group">
             <button type="submit" class="btn btn-primary">ذخیره</button>
         </div>
+        &nbsp;  &nbsp;  <span style="color:blue">@Message</span>
     </div>
 </EditForm>
 @code {
@@ -48,20 +49,54 @@
     public CreateViewModel Model = new CreateViewModel();
 
     [Parameter]
-    public string IdMaster { get; set; }
+    public Models.Application Result { get; set; }
+
+    [Parameter]
+    public EventCallback<Guid> OnChangeListApplications { get; set; }
+
+    public string Message { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Result<Models.Application> result = await ApplicationService.GetAsyncById(IdMaster.ToString());
-        Model.Name = result.Data.Name;
-        Model.Description = result.Data.Description;
-        Model.Id = result.Data.Id;
+        if (Result!=null)
+        {
+            Model.Name = Result.Name;
+            Model.Description = Result.Description;
+            Model.Id = Result.Id;
+        }
     }
-
+    public void Refresh()
+    {
+        OnInitializedAsync();
+    }
     private async Task Submit()
     {
         var Result = await ApplicationService.PutAsync(Model);
+
+        if (Result.IsSuccessful)
+        {
+            Message = "عملیات ویراش با موفقیت انجام شد";
+        }
+        else
+        {
+            Message = "عملیات ویرایش با شکست مواجه شد";
+        }
+        await  OnChangeListApplications.InvokeAsync(Model.Id);
     }
- 
+    //protected override bool ShouldRender()
+    //{
+    //    bool shouldRender =
+    //        base.ShouldRender();
+
+    //    if (Result != null)
+    //    {
+    //        Model.Name = Result.Name;
+    //        Model.Description = Result.Description;
+    //        Model.Id = Result.Id;
+    //    }
+
+    //    return shouldRender;
+    //}
+
 }
 

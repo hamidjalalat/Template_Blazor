@@ -11,7 +11,7 @@
         <thead>
             <tr>
                 <th scope="col">نام</th>
-                <th scope="col">سرمایه</th>
+                <th scope="col">توضیح</th>
                 <th scope="col">عملیات</th>
             </tr>
         </thead>
@@ -24,40 +24,49 @@
                     <td>@item.Description</td>
                     <td>
                         <button type="button" @onclick="()=>Delete(item.Id)" class="btn btn-danger">حذف</button>
-                        <button type="button" @onclick="()=>Edit(item.Id)" class="btn btn-secondary">ویرایش</button>
+                        <button type="button" @onclick="()=>Edit(item)" class="btn btn-secondary">ویرایش</button>
                     </td>
                 </tr>
             }
           
         </tbody>
     </table>
-    <div>@(Id)</div>
     @if (IsEdit)
     {
-        <Edit IdMaster="@(Id)"></Edit>
+        <Edit @ref="Component" Result="@EditApplication" OnChangeListApplications="(e) => RefreshListApplications(e)"></Edit>
     }
 </div>
 @code {
     public IList<Models.Application> Application = new List<Models.Application>();
 
-    public string Id { get; set; } = "";
+    public Models.Application EditApplication { get; set; }
+
+    private Applications.Edit Component;
+
     public bool IsEdit { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
         Application = await ApplicationService.GetAsync();
     }
+
     public async Task Delete(Guid Id)
     {
         var result = await ApplicationService.DeleteAsync(Id.ToString());
-        Application = await ApplicationService.GetAsync();
 
+        Application = await ApplicationService.GetAsync();
     }  
-    public async Task Edit(Guid id)
+
+    public void Edit(Models.Application item)
     {
-        Id = id.ToString();
+        EditApplication = item;
         IsEdit = true;
 
     }
-   
+
+    private async Task  RefreshListApplications(Guid id)
+    {
+      await  OnInitializedAsync();
+    }
+
 }

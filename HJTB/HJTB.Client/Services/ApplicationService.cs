@@ -27,23 +27,23 @@ namespace HJTB.Client.Services
 			return result;
 		}
 
-        public async Task<Result<Models.Application>> GetAsyncById(string id)
+        public async Task<Result<Application>> GetAsyncById(string id)
         {
-            var result = await GetAsyncById<Result<Models.Application>>(id);
+            var result = await GetAsyncById<Result<Application>>(id);
 
             return result;
         }
 
-        public async Task<Application>PostAsync(CreateViewModel viewModel)
+        public async Task<Result> PostAsync(CreateViewModel viewModel)
 		{
-			var result =await PostAsync<CreateViewModel, Application>(viewModel);
+			var result =await PostAsync<CreateViewModel, Result>(viewModel);
 
 			return result;
 		}
 
-        public async Task<Application> PutAsync(CreateViewModel viewModel)
+        public async Task<Result> PutAsync(CreateViewModel viewModel)
         {
-            var result = await PutAsync<CreateViewModel, Application>(viewModel);
+            var result = await PutAsync<CreateViewModel, Result>(viewModel);
 
             return result;
         }

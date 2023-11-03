@@ -6,7 +6,6 @@
 
 <h3>Application</h3>
 
-
 <br>
 <EditForm Model="Model" OnValidSubmit="Submit">
     <DataAnnotationsValidator />
@@ -23,6 +22,7 @@
                 </div>
             </div>
         </div>
+        <br>
 
         <div class="form-group row">
             <div class="col-md-1">
@@ -39,6 +39,8 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary">ذخیره</button>
+            &nbsp;  &nbsp;  <span style="color:blue">@Message</span>
+
         </div>
     </div>
 </EditForm>
@@ -46,12 +48,21 @@
 
     public CreateViewModel Model = new CreateViewModel();
 
-  
+    public string Message { get; set; }
 
     private async Task Submit()
     {
         var Result = await ApplicationService.PostAsync(Model);
 
+        if (Result.IsSuccessful)
+        {
+            Message = "عملیات درج با موفقیت انجام شد";
+        }
+        else
+        {
+               Message = "عملیات درج با شکست مواجه شد";
+        }
+    
     }
 }
 

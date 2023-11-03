@@ -78,7 +78,7 @@ namespace Infrastructure
 
         protected virtual async Task<O> GetAsyncById<O>(string id)
         {
-            System.Net.Http.HttpResponseMessage response = null;
+            HttpResponseMessage response = null;
 
             try
             {
