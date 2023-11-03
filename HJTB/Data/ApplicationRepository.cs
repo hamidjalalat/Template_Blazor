@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
@@ -8,6 +10,15 @@ namespace Data
 	{
 		internal ApplicationRepository(DatabaseContext databaseContext) : base(databaseContext)
 		{
+			
+		}
+		public List<Models.Application> ExecSpApplication()
+		{
+			 string name = "taha";
+
+             var result= DatabaseContext.Applications.FromSqlInterpolated($"sptest {name}").ToList();
+
+            return result;
 		}
 	}
 }

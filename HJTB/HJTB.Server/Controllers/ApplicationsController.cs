@@ -14,6 +14,7 @@ namespace Dtx.Security.Server.Controllers
     {
         public ApplicationsController(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
+
         }
 
         [HttpGet]
