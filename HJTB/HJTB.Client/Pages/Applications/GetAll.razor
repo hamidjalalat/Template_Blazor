@@ -1,0 +1,63 @@
+﻿@page "/Application/GetAll"
+
+@using ViewModels.Applications;
+
+<h3>GetAll</h3>
+
+@inject Services.ApplicationService ApplicationService
+
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">نام</th>
+                <th scope="col">سرمایه</th>
+                <th scope="col">عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Application)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>
+                        <button type="button" @onclick="()=>Delete(item.Id)" class="btn btn-danger">حذف</button>
+                        <button type="button" @onclick="()=>Edit(item.Id)" class="btn btn-secondary">ویرایش</button>
+                    </td>
+                </tr>
+            }
+          
+        </tbody>
+    </table>
+    <div>@(Id)</div>
+    @if (IsEdit)
+    {
+        <Edit IdMaster="@(Id)"></Edit>
+    }
+</div>
+@code {
+    public IList<Models.Application> Application = new List<Models.Application>();
+
+    public string Id { get; set; } = "";
+    public bool IsEdit { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Application = await ApplicationService.GetAsync();
+    }
+    public async Task Delete(Guid Id)
+    {
+        var result = await ApplicationService.DeleteAsync(Id.ToString());
+        Application = await ApplicationService.GetAsync();
+
+    }  
+    public async Task Edit(Guid id)
+    {
+        Id = id.ToString();
+        IsEdit = true;
+
+    }
+   
+}
