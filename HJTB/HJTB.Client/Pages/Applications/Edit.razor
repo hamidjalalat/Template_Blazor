@@ -58,17 +58,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (Result!=null)
-        {
-            Model.Name = Result.Name;
-            Model.Description = Result.Description;
-            Model.Id = Result.Id;
-        }
+        Model.Name = Result.Name;
+        Model.Description = Result.Description;
+        Model.Id = Result.Id;
     }
-    public void Refresh()
-    {
-        OnInitializedAsync();
-    }
+
     private async Task Submit()
     {
         var Result = await ApplicationService.PutAsync(Model);
@@ -81,8 +75,9 @@
         {
             Message = "عملیات ویرایش با شکست مواجه شد";
         }
-        await  OnChangeListApplications.InvokeAsync(Model.Id);
+        await OnChangeListApplications.InvokeAsync(Model.Id);
     }
+
     //protected override bool ShouldRender()
     //{
     //    bool shouldRender =
