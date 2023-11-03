@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -54,19 +55,7 @@ namespace HJTB.Server
 				options.JsonSerializerOptions.PropertyNamingPolicy = null;
 			});
 
-			//services.AddDbContext<Data.DatabaseContext>(options =>
-			//{
-			//	options.UseSqlServer
-			//		(connectionString: "Password=1234512345;Persist Security Info=True;User ID=SA;Initial Catalog=HjxSecurity;Data Source=.");
-			//});
-
-			//services.AddDbContext<Data.DatabaseContext>(options =>
-			//{
-			//	options.UseSqlServer
-			//		(connectionString: Configuration.GetSection(key: "ConnectionStrings").GetSection(key: "MyConnectionString");
-			//});
-
-			//services.AddTransient<Data.IUnitOfWork, Data.UnitOfWork>();
+			
 
 			services.AddTransient<Data.IUnitOfWork, Data.UnitOfWork>(sp =>
 			{
@@ -87,25 +76,13 @@ namespace HJTB.Server
 
 				return new Data.UnitOfWork(options: options);
 			});
-
-			//services.AddTransient<Hjx.ILogger, Hjx.Logger>();
-		}
+            services.AddAutoMapper(typeof(Startup));
+        }
 
 		public void Configure
 			(IApplicationBuilder app,
 			IWebHostEnvironment env)
 		{
-			//if (env.IsDevelopment())
-			//{
-			//	app.UseDeveloperExceptionPage();
-			//}
-			//else
-			//{
-			//	app.UseExceptionHandler("/Error");
-			//	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-			//	app.UseHsts();
-			//}
-
 			//app.UseHttpsRedirection();
 
 			app.UseCors(policyName: AdminCorsPolicy);

@@ -1,10 +1,12 @@
-﻿using Data;
+﻿using AutoMapper;
+using Data;
 using Hjx;
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ViewModels.Applications;
 
@@ -12,10 +14,12 @@ namespace Dtx.Security.Server.Controllers
 {
     public class ApplicationsController : BaseApiControllerWithDatabase
     {
-        public ApplicationsController(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public ApplicationsController(IUnitOfWork unitOfWork, AutoMapper.IMapper mapper) : base(unitOfWork)
         {
-
+            Mapper = mapper;
         }
+
+        protected AutoMapper.IMapper Mapper { get; }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Application>>> GetAsync()
@@ -69,12 +73,7 @@ namespace Dtx.Security.Server.Controllers
 
             try
             {
-                var newEntity =
-                    new Models.Application
-                    {
-                        Name = viewModel.Name,
-                        Description = viewModel.Description,
-                    };
+                Models.Application newEntity = Mapper.Map<Models.Application>(viewModel);
 
                 await UnitOfWork.ApplicationRepository.InsertAsync(newEntity);
 

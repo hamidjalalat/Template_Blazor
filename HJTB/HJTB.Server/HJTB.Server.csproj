@@ -3,7 +3,11 @@
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 	</PropertyGroup>
-	<ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <ProjectReference Include="..\Data\Data.csproj" />
 	  <ProjectReference Include="..\Hjx\Hjx.csproj" />
 	  <ProjectReference Include="..\Models\Models.csproj" />
