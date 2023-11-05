@@ -33,16 +33,12 @@
     </table>
     @if (IsEdit)
     {
-        <Edit @ref="Component" Result="@EditApplication" OnChangeListApplications="(e) => RefreshListApplications(e)"></Edit>
+        <Edit  Result="@EditApplication" OnChangeListApplications="(e) => RefreshListApplications(e)"></Edit>
     }
 </div>
 @code {
     public IList<Models.Application> Application = new List<Models.Application>();
-
     public Models.Application EditApplication { get; set; }
-
-    private Applications.Edit Component;
-
     public bool IsEdit { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
@@ -61,12 +57,11 @@
     {
         EditApplication = item;
         IsEdit = true;
-
     }
 
     private async Task  RefreshListApplications(Guid id)
     {
-      await  OnInitializedAsync();
+       await  OnInitializedAsync();
     }
 
 }

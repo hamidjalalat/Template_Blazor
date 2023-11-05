@@ -78,6 +78,18 @@
         await OnChangeListApplications.InvokeAsync(Model.Id);
     }
 
+
+    	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+            if (Result != null)
+            {
+                Model.Name = Result.Name;
+                Model.Description = Result.Description;
+                Model.Id = Result.Id;
+            }
+
+	}
     //protected override bool ShouldRender()
     //{
     //    bool shouldRender =
